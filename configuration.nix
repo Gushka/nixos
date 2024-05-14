@@ -33,14 +33,35 @@ in {
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    vim
-    alejandra
-  ];
+  environment = { 
+    systemPackages = with pkgs; [
+      vim
+      alejandra
+      gnupg
+      pinentry-curses
+    ];
+    variables = {
+      GPG_TTY = "$tty";
+    };
+  }; 
 
   programs = {
     git = {
       enable = true;
+      config = {
+        init.defaultbranch = "master";
+        commit.gpgsign = true;
+        tag.gpgsign = true;
+        diff.tool = "vimdiff";
+        merge.tool = "vimdiff";
+      };
+    };
+    gnupg.agent = {
+      enable = true;
+      settings = {
+        default-cache-ttl = 86400;
+        max-cache-ttl = 86400;
+      };
     };
   };
 
