@@ -33,7 +33,7 @@ in {
     };
   };
 
-  environment = { 
+  environment = {
     systemPackages = with pkgs; [
       vim
       alejandra
@@ -43,7 +43,7 @@ in {
     variables = {
       GPG_TTY = "$tty";
     };
-  }; 
+  };
 
   programs = {
     git = {
