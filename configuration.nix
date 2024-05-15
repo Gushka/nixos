@@ -56,6 +56,9 @@ in {
         tag.gpgsign = true;
         diff.tool = "vimdiff";
         merge.tool = "vimdiff";
+        # https://github.com/getsops/sops#showing-diffs-in-cleartext-in-git
+        # Workaround for: https://github.com/getsops/sops/issues/884#issuecomment-1399395740
+        diff.sopsdiffer.textconv = "sops --config /dev/null -d";
       };
     };
     gnupg.agent = {
