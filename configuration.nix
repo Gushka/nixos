@@ -5,7 +5,6 @@
   ...
 }: let
   user = "nix";
-  password = "nix";
 
   timeZone = "Europe/Moscow";
   defaultLocale = "en_US.UTF-8";
@@ -89,8 +88,10 @@ in {
       keyFile = "/var/lib/sops-nix/key.txt";
     };
     secrets = {
-      example-key = {};
-      "myservice/my_subdir/my_secret" = {};
+      # echo "password" | mkpasswd -s
+      nix-password = {};
+      # https://github.com/Mic92/sops-nix?tab=readme-ov-file#setting-a-users-password
+      nix-password.neededForUsers = true;
     };
   };
   # Permit password-less sudo
@@ -110,7 +111,7 @@ in {
     mutableUsers = false;
     users."${user}" = {
       isNormalUser = true;
-      password = password;
+      hashedPasswordFile = config.sops.secrets.nix-password.path;
       extraGroups = ["wheel" "video"];
       packages = with pkgs; [
         neofetch
