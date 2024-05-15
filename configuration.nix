@@ -11,9 +11,11 @@
   defaultLocale = "en_US.UTF-8";
 
   hardware-config = "/home/${user}/dotfiles/nixos/devices/raspberrypi.nix";
+  sops-nix = "${fetchTarball "https://github.com/Mic92/sops-nix/archive/master.tar.gz"}/modules/sops";
 in {
   imports = [
     hardware-config
+    sops-nix
   ];
 
   time.timeZone = timeZone;
@@ -39,6 +41,7 @@ in {
       alejandra
       gnupg
       pinentry-curses
+      sops
     ];
     variables = {
       GPG_TTY = "$tty";
@@ -75,6 +78,21 @@ in {
     };
   };
 
+  sops = {
+    # Add secrets.yaml to the nix store
+    # This can be avoided by adding a string to the full path instead, i.e.
+    # sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      # Use an age key that is expected to already be in the filesystem
+      keyFile = "/var/lib/sops-nix/key.txt";
+    };
+    secrets = {
+      example-key = {};
+      "myservice/my_subdir/my_secret" = {};
+    };
+  };
   # Permit password-less sudo
   security.sudo.extraRules = [
     {

@@ -1,0 +1,7 @@
+keys:
+  - &raspberrypi age17mag440j0zc3ff2yljlmmd03fz7v4n8t9a0tlxq7k0ckll2whqksn479zy
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *raspberrypi
