@@ -115,6 +115,7 @@ in {
       packages = with pkgs; [
         neofetch
         htop
+        gh
       ];
     };
   };
