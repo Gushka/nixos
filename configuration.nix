@@ -124,5 +124,12 @@ in {
     };
   };
 
+  # Enable regular nix store garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   system.stateVersion = "24.05";
 }
