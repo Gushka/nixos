@@ -95,8 +95,13 @@ in {
       nix-password = {};
       # https://github.com/Mic92/sops-nix?tab=readme-ov-file#setting-a-users-password
       nix-password.neededForUsers = true;
-    };
+      # Public SSH keys
+      ssh-wsl-pub = {};
+      ssh-winster-pub = {};
+      github-token = {};
+     };
   };
+
   # Permit password-less sudo
   security.sudo.extraRules = [
     {
@@ -115,6 +120,10 @@ in {
     users."${user}" = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets.nix-password.path;
+      openssh.authorizedKeys.keys = [
+        config.sops.secrets.ssh-wsl-pub.path
+        config.sops.secrets.ssh-winster-pub.path
+      ];
       extraGroups = ["wheel" "video"];
       packages = with pkgs; [
         neofetch
