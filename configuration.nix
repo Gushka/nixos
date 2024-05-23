@@ -88,6 +88,9 @@ in {
       ssh-wsl-pub = {};
       ssh-winster-pub = {};
       github-token = {};
+      git-signing-key-personal = {};
+      git-email-personal = {};
+      git-username-personal = {};
     };
   };
 
