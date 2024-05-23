@@ -33,6 +33,8 @@ in {
           # https://github.com/getsops/sops#showing-diffs-in-cleartext-in-git
           # Workaround for: https://github.com/getsops/sops/issues/884#issuecomment-1399395740
           diff.sopsdiffer.textconv = "sops --config /dev/null -d";
+          # TODO: integrate sops secret with git remote auth
+          credential.helper = "cache --timeout=3600";
         };
       };
     };
