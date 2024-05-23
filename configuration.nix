@@ -10,11 +10,13 @@
   defaultLocale = "en_US.UTF-8";
 
   hardware-config = "/home/${user}/dotfiles/nixos/devices/raspberrypi.nix";
+  home-config = "/home/${user}/dotfiles/nixos/home.nix";
   sops-nix = "${fetchTarball "https://github.com/Mic92/sops-nix/archive/master.tar.gz"}/modules/sops";
 in {
   imports = [
     hardware-config
     sops-nix
+    home-config
   ];
 
   time.timeZone = timeZone;
@@ -48,19 +50,6 @@ in {
   };
 
   programs = {
-    git = {
-      enable = true;
-      config = {
-        init.defaultbranch = "master";
-        commit.gpgsign = true;
-        tag.gpgsign = true;
-        diff.tool = "vimdiff";
-        merge.tool = "vimdiff";
-        # https://github.com/getsops/sops#showing-diffs-in-cleartext-in-git
-        # Workaround for: https://github.com/getsops/sops/issues/884#issuecomment-1399395740
-        diff.sopsdiffer.textconv = "sops --config /dev/null -d";
-      };
-    };
     gnupg.agent = {
       enable = true;
       settings = {
@@ -99,7 +88,7 @@ in {
       ssh-wsl-pub = {};
       ssh-winster-pub = {};
       github-token = {};
-     };
+    };
   };
 
   # Permit password-less sudo
@@ -125,11 +114,6 @@ in {
         config.sops.secrets.ssh-winster-pub.path
       ];
       extraGroups = ["wheel" "video"];
-      packages = with pkgs; [
-        neofetch
-        htop
-        gh
-      ];
     };
   };
 
