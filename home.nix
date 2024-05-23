@@ -22,7 +22,7 @@ in {
       neofetch
       htop
       bottom
-      exa
+      eza
       ripgrep
       tldr
       difftastic
